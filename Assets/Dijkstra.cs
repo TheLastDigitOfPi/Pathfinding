@@ -35,6 +35,7 @@ public class Dijkstra : MazeSolver
             return;
         if (startCell == endCell)
             return;
+        var handler = MazeHandler.Instance;
         MazeHandler.Instance.ClearPathfindingCells();
         var MazeData = MazeHandler.Instance.MazeData;
         var cells = MazeData.Cells;
@@ -51,8 +52,10 @@ public class Dijkstra : MazeSolver
         Debug.Log("Finished Solving Maze");
         async Task recursiveLoop(Cell currentNode)
         {
+            int loop = -1;
             while (true)
             {
+                loop++;
                 unvistedCells.Remove(currentNode);
                 currentNode.PathfindingVisited = true;
                 if (currentNode.CellType != CellTypes.Start && currentNode.CellType != CellTypes.End)
@@ -67,7 +70,8 @@ public class Dijkstra : MazeSolver
                         return;
                     }
                 }
-                await Task.Delay(_delayTimeMS);
+                if (loop % handler.DelayFrenquency == 0)
+                    await Task.Delay(handler.DelayTimeMS);
                 //If cell is our goal, we made it
                 if (currentNode.Equals(endCell))
                 {
@@ -143,8 +147,10 @@ public class Dijkstra : MazeSolver
         async Task FoundPath(Cell endCell)
         {
             Cell lastCellChanged = endCell;
+            int loop = -1;
             while (endCell.PrevRouteCell != null)
             {
+                loop++;
                 if (endCell.CellType != CellTypes.Start && endCell.CellType != CellTypes.End)
                     MazeHandler.Instance.PlaceTile(CellTypes.FoundPath, endCell.Position3);
                 endCell = endCell.PrevRouteCell;
@@ -159,7 +165,8 @@ public class Dijkstra : MazeSolver
                         return;
                     }
                 }
-                await Task.Delay(_delayTimeMS);
+                if (loop % handler.DelayFrenquency == 0)
+                    await Task.Delay(handler.DelayTimeMS);
             }
             onMazeSolve?.Invoke();
         }

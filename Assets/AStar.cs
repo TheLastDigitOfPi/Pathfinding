@@ -34,8 +34,9 @@ public class AStar : MazeSolver
             return;
         if (startCell == endCell)
             return;
-        MazeHandler.Instance.ClearPathfindingCells();
-        var MazeData = MazeHandler.Instance.MazeData;
+        var handler = MazeHandler.Instance;
+        handler.ClearPathfindingCells();
+        var MazeData = handler.MazeData;
         var cells = MazeData.Cells;
         int distanceValue = 1;
         startCell.PathfindingValue = 0;
@@ -48,10 +49,13 @@ public class AStar : MazeSolver
         await recursiveLoop(startCell);
         IsRunning = false;
         Debug.Log("Finished Solving Maze");
+
         async Task recursiveLoop(Cell currentNode)
         {
+            int loop = -1;
             while (true)
             {
+                loop++;
                 unvistedCells.Remove(currentNode);
                 currentNode.PathfindingVisited = true;
                 if (currentNode.CellType != CellTypes.Start && currentNode.CellType != CellTypes.End)
@@ -66,7 +70,8 @@ public class AStar : MazeSolver
                         return;
                     }
                 }
-                await Task.Delay(_delayTimeMS);
+                if (loop % handler.DelayFrenquency == 0)
+                    await Task.Delay(handler.DelayTimeMS);
                 //If cell is our goal, we made it
                 if (currentNode.Equals(endCell))
                 {
@@ -145,8 +150,10 @@ public class AStar : MazeSolver
         async Task FoundPath(Cell endCell)
         {
             Cell lastCellChanged = endCell;
+            int loop = -1;
             while (endCell.PrevRouteCell != null)
             {
+                loop++;
                 if (endCell.CellType != CellTypes.Start && endCell.CellType != CellTypes.End)
                     MazeHandler.Instance.PlaceTile(CellTypes.FoundPath, endCell.Position3);
                 endCell = endCell.PrevRouteCell;
@@ -161,7 +168,8 @@ public class AStar : MazeSolver
                         return;
                     }
                 }
-                await Task.Delay(_delayTimeMS);
+                if (loop % handler.DelayFrenquency == 0)
+                    await Task.Delay(handler.DelayTimeMS);
             }
             onMazeSolve?.Invoke();
         }

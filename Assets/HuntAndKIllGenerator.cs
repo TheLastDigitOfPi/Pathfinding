@@ -102,7 +102,8 @@ public class HuntAndKIllGenerator : MazeGenerator
             //CheckAndSetBorders(newCell);
             if (currentItteration % handler.DelayFrenquency == 0)
                 await Task.Delay(handler.DelayTimeMS);
-            await StartWalk(newCell, currentItteration++);
+            currentItteration++;
+            await StartWalk(newCell, currentItteration);
         }
 
 

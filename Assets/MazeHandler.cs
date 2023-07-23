@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
 using System.Threading.Tasks;
-using System.Linq;
 using static MazeHandler;
 using TMPro;
 using Unity.VisualScripting;
@@ -34,7 +33,7 @@ public class MazeHandler : MonoBehaviour
     [field: SerializeField] public bool UseRandomSeed { get; private set; }
     [field: SerializeField] public MazeGenerator[] MazeGenerators { get; private set; }
     [field: SerializeField] public int CurrentMazeGenerator { get; private set; }
-
+    [SerializeField] TMP_Dropdown _generatorChoiceDropdown;
 
     [field: Header("Size Settings")]
     [field: SerializeField] public TextMeshProUGUI SizeText { get; private set; }
@@ -76,6 +75,7 @@ public class MazeHandler : MonoBehaviour
     [field: Header("Maze Solving")]
     [field: SerializeField] public MazeSolver[] MazeSolvers { get; private set; }
     [field: SerializeField] public int CurrentMazeSolver { get; private set; } = 0;
+    [SerializeField] ToggleButton _mazeSolverToggler;
 
     private void Awake()
     {
@@ -91,6 +91,12 @@ public class MazeHandler : MonoBehaviour
         UpdateSizeText();
         StartCell = null;
         EndCell = null;
+        MazeSolvers[CurrentMazeSolver].OnMazeSolve += _mazeSolverToggler.ResetButtons;
+    }
+
+    private void OnDestroy()
+    {
+        MazeSolvers[CurrentMazeSolver].OnMazeSolve -= _mazeSolverToggler.ResetButtons;
     }
 
     #region Maze Generation
@@ -271,13 +277,8 @@ public class MazeHandler : MonoBehaviour
         //Set the new tile and update the maze data
         var newTileBase = EnumToTileBase(newTileType);
         MazeMap.SetTile(pos, newTileBase);
-        if (MazeData.CellWithinBounds(pos.x, pos.y))
-        {
-            var cell = MazeData.CellAtPos(pos.x, pos.y);
-            cell.GenerationVisited = IsGeneratedTileType(newTileType);
-            cell.Walkable = IsWalkableTile(newTileType);
-            cell.CellType = newTileType;
-        }
+        if (MazeData.TryGetCellAtPos(pos.x, pos.y, out var cell))
+            cell.SetCellData(newTileType);
 
         //Increase new tile count
         switch (newTileType)
@@ -310,56 +311,19 @@ public class MazeHandler : MonoBehaviour
         YellowTileCounter.text = YellowTilesCount.ToString();
     }
 
-    bool IsGeneratedTileType(CellTypes type)
-    {
-        switch (type)
-        {
-            case CellTypes.Start:
-                return true;
-            case CellTypes.End:
-                return true;
-            case CellTypes.Wall:
-                return true;
-            case CellTypes.Floor:
-                return true;
-            case CellTypes.Empty:
-                return false;
-            case CellTypes.Searching:
-                return true;
-            case CellTypes.FoundPath:
-                return true;
-            case CellTypes.None:
-                return false;
-            default:
-                return false;
-        }
-    }
-    public bool IsWalkableTile(CellTypes type)
-    {
-        switch (type)
-        {
-            case CellTypes.Start:
-                return true;
-            case CellTypes.End:
-                return true;
-            case CellTypes.Wall:
-                return false;
-            case CellTypes.Floor:
-                return true;
-            case CellTypes.Empty:
-                return false;
-            case CellTypes.None:
-                return false;
-            default:
-                return false;
-        }
-    }
     #endregion
 
     #region Maze Pathfinding
 
     public void ToggleRunPathfinding()
     {
+        if(StartCell == null || EndCell == null)
+        {
+            _mazeSolverToggler.ResetButtons();
+            return;
+        }
+        if (!MazeSolvers[CurrentMazeSolver].IsRunning)
+            ResetPathfinding();
         MazeSolvers[CurrentMazeSolver].ToggleMazeSolver();
     }
 
@@ -368,6 +332,19 @@ public class MazeHandler : MonoBehaviour
         MazeSolvers[CurrentMazeSolver].CancelMazeSolver();
         MazeData.ResetPathfinding();
         UpdateMaze();
+    }
+
+    public void ChangePathfinding()
+    {
+        int index = _generatorChoiceDropdown.value;
+        if (index >= MazeSolvers.Length)
+            return;
+        ResetPathfinding();
+
+        MazeSolvers[CurrentMazeSolver].OnMazeSolve -= _mazeSolverToggler.ResetButtons;
+        _mazeSolverToggler.ResetButtons();
+        CurrentMazeSolver = index;
+        MazeSolvers[CurrentMazeSolver].OnMazeSolve += _mazeSolverToggler.ResetButtons;
     }
 
     #endregion
@@ -483,187 +460,6 @@ public static class Extensions
             list[k] = list[n];
             list[n] = value;
         }
-    }
-}
-
-
-[System.Serializable]
-public class Maze
-{
-    public int Size = 100;
-    public const int MAXMAZESIZE = 256;
-    public const int DEFAULTMAZESIZE = 100;
-    public Cell[,] Cells;
-
-    public Maze()
-    {
-        Size = DEFAULTMAZESIZE;
-        Cells = new Cell[Size, Size];
-        for (int x = 0; x < Size; x++)
-        {
-            for (int y = 0; y < Size; y++)
-            {
-                Cells[x, y] = new Cell(x, y);
-            }
-        }
-    }
-
-    public Maze(int size)
-    {
-        Size = size;
-        Cells = new Cell[size, size];
-        for (int x = 0; x < size; x++)
-        {
-            for (int y = 0; y < size; y++)
-            {
-                Cells[x, y] = new Cell(x, y);
-            }
-        }
-    }
-    public void ResetMaze()
-    {
-        if (Size <= 0)
-            Size = DEFAULTMAZESIZE;
-        Cells = new Cell[Size, Size];
-        for (int x = 0; x < Size; x++)
-        {
-            for (int y = 0; y < Size; y++)
-            {
-                Cells[x, y] = new Cell(x, y);
-            }
-        }
-    }
-
-    public Cell CellAtPos(Vector2Int pos)
-    {
-        if (pos.x < 0 || pos.y < 0 || pos.x >= Size || pos.y >= Size)
-            return null;
-        return Cells[pos.x, pos.y];
-    }
-
-    public Cell CellAtPos(int x, int y)
-    {
-        if (x < 0 || y < 0 || x >= Size || y >= Size)
-            return null;
-        return Cells[x, y];
-    }
-
-    public bool TryGetCellAtPos(int x, int y, out Cell cell)
-    {
-        cell = null;
-        if (!CellWithinBounds(x, y))
-            return false;
-        cell = Cells[x, y];
-        return true;
-    }
-
-    public bool CellHasWalkableNeighbor(int x, int y, System.Random rand)
-    {
-        List<int> directions = new() { 0, 1, 2, 3 };
-        directions = directions.OrderBy(d => rand.Next()).ToList();
-
-        foreach (var direction in directions)
-        {
-            int newX = x;
-            int newY = y;
-
-            switch (direction)
-            {
-                case 0:
-                    newX++; // Move right
-                    break;
-                case 1:
-                    newY++; // Move up
-                    break;
-                case 2:
-                    newX--; // Move left
-                    break;
-                case 3:
-                    newY--; //Move down
-                    break;
-            }
-
-            if (CellWithinBounds(newX, newY) && CellAtPos(newX, newY).Walkable)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public bool CellWithinBounds(int x, int y)
-    {
-        return x >= 0 && y >= 0 && x < Size && y < Size;
-    }
-
-    public bool PathfindableNeighbors(int x, int y, out List<Cell> cells)
-    {
-        cells = null;
-        if (!CellWithinBounds(x, y))
-            return false;
-        cells = new();
-        int[] xPositions = { 1, -1, 0, 0 };
-        int[] yPositions = { 0, 0, -1, 1 };
-
-        for (int i = 0; i < xPositions.Length; i++)
-        {
-            if (!TryGetCellAtPos(x + xPositions[i], y + yPositions[i], out var cell))
-                continue;
-            if (cell.PathfindingVisited || !cell.Walkable)
-                continue;
-            cells.Add(cell);
-        }
-        return cells.Count > 0;
-    }
-
-    internal void ResetPathfinding()
-    {
-        foreach (var cell in Cells)
-        {
-            if (!cell.PathfindingVisited || cell.PathfindingValue == -1)
-                continue;
-            cell.PathfindingVisited = false;
-            cell.PathfindingValue = -1;
-            cell.CellType = CellTypes.Floor;
-        }
-    }
-}
-[System.Serializable]
-public class Cell
-{
-    public override bool Equals(object obj)
-    {
-        if (obj is not Cell)
-            return false;
-        var other = obj as Cell;
-        return other.Position.Equals(this.Position);
-    }
-    public Cell PrevRouteCell;
-    public int xPos;
-    public int yPos;
-    public bool GenerationVisited = false;
-    public bool Walkable = false;
-    public bool PathfindingVisited = false;
-    public int PathfindingValue = -1;
-    public bool AttemptedToBreakWall = false;
-    public CellTypes CellType = CellTypes.Empty;
-    public Cell()
-    {
-    }
-    public Cell(int x, int y)
-    {
-        xPos = x;
-        yPos = y;
-    }
-
-    public Vector2Int Position
-    {
-        get { return new Vector2Int(xPos, yPos); }
-    }
-
-    public Vector3Int Position3
-    {
-        get { return new Vector3Int(xPos, yPos, 0); }
     }
 }
 
