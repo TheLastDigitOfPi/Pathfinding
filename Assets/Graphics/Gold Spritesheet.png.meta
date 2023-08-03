@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 16384
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -132,8 +132,8 @@ TextureImporter:
       name: Pause
       rect:
         serializedVersion: 2
-        x: 96
-        y: 3068
+        x: 93
+        y: 462
         width: 32
         height: 32
       alignment: 0
@@ -143,113 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 16a50bdad5b481c43b097c2f678dc8ea
-      internalID: 1565205265
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Play
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 3068
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 671ecc1f093478844b9c35157dfac9aa
-      internalID: -1646840723
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Reset
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 3068
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2f4a1066496080c459016067d7bae762
-      internalID: -1190047926
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Speed Up
-      rect:
-        serializedVersion: 2
-        x: 544
-        y: 3068
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 72331e9fef2913243b803a801bc5aff2
-      internalID: 426160891
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Notes
-      rect:
-        serializedVersion: 2
-        x: 951
-        y: 853
-        width: 142
-        height: 142
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 15, y: 13, z: 11, w: 13}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2d3150c7263ed0a4d9377647ef5bf97c
-      internalID: -1189707953
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Background
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 1564
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 6, y: 6, z: 6, w: 6}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0eac2ba425e13c64e9431af62fe55c85
-      internalID: -914685450
+      spriteID: 63c49c26c7500a74d86dd6a0747d5d2a
+      internalID: -592582228
       vertices: []
       indices: 
       edges: []
@@ -258,103 +153,19 @@ TextureImporter:
       name: Ribbon
       rect:
         serializedVersion: 2
-        x: 2816
-        y: 2668
+        x: 781
+        y: 421
         width: 96
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 17, y: 0, z: 17, w: 0}
+      border: {x: 18, y: 0, z: 17, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 593c67edceb6a954492c26af05e91b8f
-      internalID: 1951363769
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Down Arrow
-      rect:
-        serializedVersion: 2
-        x: 457
-        y: 2084
-        width: 14
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e3ab15388220aed47b5bded3c0739ef8
-      internalID: -1120803199
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Check Mark
-      rect:
-        serializedVersion: 2
-        x: 456
-        y: 2182
-        width: 17
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 52c84dda91476574580c9009affbc6ca
-      internalID: -786378365
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Up Arrow
-      rect:
-        serializedVersion: 2
-        x: 416
-        y: 2972
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bb9534c8c6b21ea4fa5c8cc5d6a54e75
-      internalID: 684222229
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Down Arrow Full
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 2972
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 99a915b2a92e2704596411f4f24f2459
-      internalID: 1580582049
+      spriteID: a0b69b72d29451245aff522d43e91565
+      internalID: 963447354
       vertices: []
       indices: 
       edges: []
@@ -363,31 +174,31 @@ TextureImporter:
       name: Empty Button
       rect:
         serializedVersion: 2
-        x: 352
-        y: 2876
+        x: 349
+        y: 270
         width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 4, z: 2, w: 2}
+      border: {x: 2, y: 3, z: 2, w: 2}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dde9e0cf6544903408d9066953cdc864
-      internalID: 1503419762
+      spriteID: 5c29bcecacd6ace469154585e12c7c40
+      internalID: 780981659
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Check Mark Filled
+      name: Gold Spritesheet_6
       rect:
         serializedVersion: 2
-        x: 448
-        y: 3068
-        width: 32
-        height: 32
+        x: 77
+        y: 45
+        width: 142
+        height: 142
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -395,18 +206,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 110dca21b9cfd214183afdeb524343e1
-      internalID: -142847002
+      spriteID: c36cfd0e2039261448e0449b49306d67
+      internalID: 945493790
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Empty Light
+      name: Light Empty Button
       rect:
         serializedVersion: 2
-        x: 352
-        y: 2428
+        x: 255
+        y: 84
         width: 32
         height: 32
       alignment: 0
@@ -416,8 +227,155 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1381d1e8f82c05e45b5c85d01a97391c
-      internalID: 1230398802
+      spriteID: 78a1b4a1f0388bd46987eb17b28fe840
+      internalID: 909094785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Background
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 72
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 6, z: 6, w: 6}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5db913351768b60488ac370afc985191
+      internalID: 224923079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Play
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 462
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13cdb8e4a32fa354d9e2164c9e8d1dc9
+      internalID: 1822486695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Reset
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 462
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c362f42ce9c1dec448522efed35ef177
+      internalID: -1014309845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Down Arrow
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 292
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e806d7e1b891194abedd6195d496b11
+      internalID: 1289121700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Down Arrow Filled
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 366
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 168ca68ab9494264b96fc23b266598f6
+      internalID: 1670868547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up Arrow
+      rect:
+        serializedVersion: 2
+        x: 285
+        y: 366
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c986ae7dd11a9940b2f0d5bfe8c9e4c
+      internalID: 1120386850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Checkmark
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 290
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e561ec35f3ac7b54ca6cdfd00e86e836
+      internalID: 690068885
       vertices: []
       indices: 
       edges: []
@@ -433,20 +391,20 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Background: -914685450
-      Check Mark: -786378365
-      Check Mark Filled: -142847002
-      Down Arrow: -1120803199
-      Down Arrow Full: 1580582049
-      Empty Button: 1503419762
-      Empty Light: 1230398802
-      Notes: -1189707953
-      Pause: 1565205265
-      Play: -1646840723
-      Reset: -1190047926
-      Ribbon: 1951363769
-      Speed Up: 426160891
-      Up Arrow: 684222229
+      Background: 224923079
+      Checkmark: 866773103
+      Down Arrow: 1289121700
+      Down Arrow Filled: 1670868547
+      Empty Button: 780981659
+      Gold Spritesheet_3: 1803997495
+      Gold Spritesheet_4: 242666428
+      Gold Spritesheet_6: 945493790
+      Light Empty Button: 909094785
+      Pause: -592582228
+      Play: 1822486695
+      Reset: -1014309845
+      Ribbon: 963447354
+      Up Arrow: 1120386850
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

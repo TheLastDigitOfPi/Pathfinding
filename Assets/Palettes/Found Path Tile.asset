@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Found Path Tile
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 02813f1ffa0befb41ac6536dd300cdda, type: 3}
-  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.7993579, g: 0, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
