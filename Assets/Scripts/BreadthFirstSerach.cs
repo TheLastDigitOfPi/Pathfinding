@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class BreadthFirstSerach : MazeSolver
 {
-    async UniTask WaitUntilPlaying()
-    {
-        while (IsPaused)
-        {
-            await UniTask.Delay(5);
-            if (!IsRunning || !Application.isPlaying)
-                return;
-        }
-    }
 
     public override async void ToggleMazeSolver()
     {
@@ -22,28 +13,33 @@ public class BreadthFirstSerach : MazeSolver
             return;
         }
 
+        //Setup
         var handler = MazeHandler.Instance;
+        var MazeData = handler.MazeData;
+
+        //Make sure start and end are valid
         var startCell = handler.StartCell;
         var endCell = handler.EndCell;
         if (startCell == null || endCell == null)
             return;
         if (startCell == endCell)
             return;
-        IsRunning = true;
+
+        //Reset any previous pathfinding values
         handler.ClearPathfindingCells();
-        var MazeData = handler.MazeData;
-        Cell currentNode = startCell;
-        var cells = MazeData.Cells;
 
-
-        Queue<Cell> CellsToSearch = new Queue<Cell>();
-        CellsToSearch.Enqueue(startCell);
+        //Start pathfinding
+        IsRunning = true;
         await StartBreadthFirstSearch(startCell);
+        
+        //End pathfinding
         IsRunning = false;
         Debug.Log("Finished Solving Maze");
 
         async UniTask StartBreadthFirstSearch(Cell currentNode)
         {
+            Queue<Cell> CellsToSearch = new Queue<Cell>();
+            CellsToSearch.Enqueue(startCell);
             int loop = -1;
             while (CellsToSearch.TryDequeue(out var nextNode))
             {
@@ -76,7 +72,7 @@ public class BreadthFirstSerach : MazeSolver
                     foreach (var foundCell in foundCells)
                     {
                         foundCell.PrevRouteCell = currentNode;
-                        if(CellsToSearch.Contains(foundCell))
+                        if (CellsToSearch.Contains(foundCell))
                             continue;
                         CellsToSearch.Enqueue(foundCell);
                     }
@@ -101,36 +97,6 @@ public class BreadthFirstSerach : MazeSolver
             }
         }
 
-
-
-        async UniTask FoundPath(Cell currentPathCell)
-        {
-            int loop = -1;
-            while (currentPathCell.PrevRouteCell != null)
-            {
-                loop++;
-                //Set the cell on the board
-                if (currentPathCell.CellType != CellTypes.Start && currentPathCell.CellType != CellTypes.End)
-                    handler.PlaceTile(CellTypes.FoundPath, currentPathCell.Position3);
-                //Check if cell has already been confirmed, meaning it loops somewhere
-                if (currentPathCell.PrevRouteCell.CellType == CellTypes.FoundPath)
-                    return;
-                //Otherwise continue the foundpath search
-                currentPathCell = currentPathCell.PrevRouteCell;
-                if (IsPaused || !IsRunning)
-                {
-                    await WaitUntilPlaying();
-                    if (!IsRunning || !Application.isPlaying)
-                    {
-                        IsRunning = false;
-                        return;
-                    }
-                }
-                if (loop % handler.DelayFrenquency == 0)
-                    await UniTask.Delay(handler.DelayTimeMS);
-            }
-            onMazeSolve?.Invoke();
-        }
     }
 
     public override void CancelMazeSolver()

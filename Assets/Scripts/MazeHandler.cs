@@ -51,10 +51,6 @@ public class MazeHandler : MonoBehaviour
     [field: SerializeField] public int SlowestFrequency { get; private set; } = 1;
     [field: SerializeField] public int FrequencyChangeAmount { get; private set; } = 5;
 
-
-    public event Action OnMazeGenerated;
-
-
     [field: Header("Tile Tracking")]
     public Cell StartCell { get; private set; }
     public Cell EndCell { get; private set; }
@@ -112,6 +108,18 @@ public class MazeHandler : MonoBehaviour
         MazeGenerators[CurrentMazeGenerator].OnMazeGenerationComplete -= _mazeGenerationToggler.ResetButtons;
     }
 
+
+    public System.Random GetRandomizer()
+    {
+        string randSeed = Seed;
+        if (UseRandomSeed)
+        {
+            randSeed = UnityEngine.Random.Range(0, 48515651).ToString();
+            UpdateRandomSeed(randSeed);
+        }
+        return new System.Random(randSeed.GetHashCode());
+    }
+
     #region Maze Generation
     public void ToggleRunMazeGeneration()
     {
@@ -140,9 +148,9 @@ public class MazeHandler : MonoBehaviour
                     cell.SetCellData(cell.CellType, true);
                     continue;
                 }
-                if (cell.CellType != CellTypes.Searching)
+                if (!cell.Walkable)
                     continue;
-                cell.SetCellData(CellTypes.Floor);
+                cell.SetCellData(CellTypes.Floor,true);
                 PlaceTile(CellTypes.Floor, cell.Position3);
             }
         }
@@ -244,7 +252,6 @@ public class MazeHandler : MonoBehaviour
             return BlueTile;
         return WhiteTile;
     }
-
 
 
     /// <summary>
@@ -408,7 +415,6 @@ public class MazeHandler : MonoBehaviour
 
     }
 
-
     public void ChangeMazeGeneration()
     {
         int index = _mazeGeneratingChoiceDropdown.value;
@@ -421,8 +427,6 @@ public class MazeHandler : MonoBehaviour
         CurrentMazeGenerator = index;
         MazeGenerators[CurrentMazeGenerator].OnMazeGenerationComplete += _mazeGenerationToggler.ResetButtons;
     }
-
-
 
 
     #endregion

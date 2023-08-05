@@ -5,61 +5,54 @@ using UnityEngine;
 public class Dijkstra : MazeSolver
 {
 
-    [SerializeField] int _delayTimeMS;
-    bool _paused = false;
-    bool _canceled = false;
-
-
-    async UniTask WaitUntilPlaying()
-    {
-        while (_paused)
-        {
-            await UniTask.Delay(5);
-            if (_canceled || !Application.isPlaying)
-                return;
-        }
-    }
-
     public override async void ToggleMazeSolver()
     {
         if (IsRunning)
         {
-            _paused = !_paused;
+            IsPaused = !IsPaused;
             return;
         }
-        IsRunning = true;
-        _canceled = false;
-        var startCell = MazeHandler.Instance.StartCell;
+
+        //Setup
+        var handler = MazeHandler.Instance;
+        var MazeData = handler.MazeData;
+
+        //Check that start and end are valid
+        var startCell = handler.StartCell;
         var endCell = MazeHandler.Instance.EndCell;
         if (startCell == null || endCell == null)
             return;
         if (startCell == endCell)
             return;
-        var handler = MazeHandler.Instance;
-        MazeHandler.Instance.ClearPathfindingCells();
-        var MazeData = MazeHandler.Instance.MazeData;
-        var cells = MazeData.Cells;
-        int distanceValue = 1;
+
+        //Reset any previous pathfinding
+        handler.ClearPathfindingCells();
         startCell.PathfindingValue = 0;
-        List<Cell> unvistedCells = new();
-        unvistedCells.Add(startCell);
+
+        //Start pathfinding
+        IsRunning = true;
         await recursiveLoop(startCell);
+
+        //End pathfinding
         IsRunning = false;
         Debug.Log("Finished Solving Maze");
+
         async UniTask recursiveLoop(Cell currentNode)
         {
+            List<Cell> unvistedCells = new();
+            unvistedCells.Add(startCell);
             int loop = -1;
-            while (true)
+            while (loop < MazeData.Size * 500)
             {
                 loop++;
                 unvistedCells.Remove(currentNode);
                 if (currentNode.CellType != CellTypes.Start && currentNode.CellType != CellTypes.End)
-                    MazeHandler.Instance.PlaceTile(CellTypes.Searching, currentNode.Position3);
+                    handler.PlaceTile(CellTypes.Searching, currentNode.Position3);
 
-                if (_paused || _canceled)
+                if (IsPaused || !IsRunning)
                 {
                     await WaitUntilPlaying();
-                    if (_canceled || !Application.isPlaying)
+                    if (!IsRunning || !Application.isPlaying)
                     {
                         IsRunning = false;
                         return;
@@ -106,10 +99,9 @@ public class Dijkstra : MazeSolver
                     {
                         unvistedCells.Add(cell);
 
-                        int newValue = currentNode.PathfindingValue + distanceValue;
+                        int newValue = currentNode.PathfindingValue + cell.PathfindingCost;
                         int oldValue = cell.PathfindingValue;
 
-                        //MazeHandler.Instance.SetMazeTile(CellTypes.Searching, cell.Position3);
 
                         if (oldValue == -1)
                         {
@@ -125,53 +117,20 @@ public class Dijkstra : MazeSolver
                     }
                     return;
                 }
-                //If no neighbors then pop the cell
-                //cellStack.Pop();
             }
 
-        }
-
-        bool IsEveryUnvisitedNodeInfinity()
-        {
-            foreach (var cell in unvistedCells)
+            bool IsEveryUnvisitedNodeInfinity()
             {
-                if (cell.PathfindingValue != -1)
-                    return false;
-            }
-            return true;
-        }
-
-        async UniTask FoundPath(Cell endCell)
-        {
-            Cell lastCellChanged = endCell;
-            int loop = -1;
-            while (endCell.PrevRouteCell != null)
-            {
-                loop++;
-                if (endCell.CellType != CellTypes.Start && endCell.CellType != CellTypes.End)
-                    MazeHandler.Instance.PlaceTile(CellTypes.FoundPath, endCell.Position3);
-                endCell = endCell.PrevRouteCell;
-                if (endCell == lastCellChanged)
-                    return;
-                if (_paused || _canceled)
+                foreach (var cell in unvistedCells)
                 {
-                    await WaitUntilPlaying();
-                    if (_canceled || !Application.isPlaying)
-                    {
-                        IsRunning = false;
-                        return;
-                    }
+                    if (cell.PathfindingValue != -1)
+                        return false;
                 }
-                if (loop % handler.DelayFrenquency == 0)
-                    await UniTask.Delay(handler.DelayTimeMS);
+                return true;
             }
-            onMazeSolve?.Invoke();
         }
+
+
     }
 
-    public override void CancelMazeSolver()
-    {
-        _canceled = true;
-        IsRunning = false;
-    }
 }
