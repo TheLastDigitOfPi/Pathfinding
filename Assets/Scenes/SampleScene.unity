@@ -2244,7 +2244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77ddab301d7d7c4d89a992e4a181db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _delayTimeMS: 10
 --- !u!4 &364679148
 Transform:
   m_ObjectHideFlags: 0
@@ -34156,7 +34155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5aede5116f007d4084aab1b63771751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHeldTile: 5
+  currentHeldTile: 3
   BlackTileSelector: {fileID: 1504762418}
   WhiteTileSelector: {fileID: 1739169699}
   GoalTileSelector: {fileID: 605632959}
@@ -34718,7 +34717,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5adb2e4283303524b99206440d5acd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _delayTimeMS: 10
 --- !u!4 &1220136337
 Transform:
   m_ObjectHideFlags: 0

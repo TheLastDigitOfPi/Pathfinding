@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using static UnityEditor.PlayerSettings;
 
 public abstract class MazeGenerator : MonoBehaviour
 {
